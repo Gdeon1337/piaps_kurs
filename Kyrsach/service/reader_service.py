@@ -46,7 +46,8 @@ async def reader_get(reader_id):
             'sex': reader.passport,
             'age': reader.age,
             'number_phone': reader.number_phone,
-            'passport': reader.passport
+            'passport': reader.passport,
+            'password': reader.password
         }
         return reader_dict
     else:
@@ -58,6 +59,8 @@ async def reader_authorize(reader_dict: dict):
         Reader.number_phone == reader_dict.get('login') and Reader.password == reader_dict.get('password')
     ).gino.first()
     if reader:
+        if reader.password != reader_dict.get('password') and reader.number_phone != reader_dict.get('logn'):
+            return {'error': 'Неверный логин или пароль'}
         reader_dict = {
             'id': reader.id,
             'name': reader.name,
@@ -70,3 +73,14 @@ async def reader_authorize(reader_dict: dict):
         return reader_dict
     else:
         return {'error': 'Неверный логин или пароль'}
+
+
+async def get_library_card(reader_id: int):
+    reader_card = await LibraryCard.query.where(LibraryCard.reader_id == int(reader_id)).gino.first()
+    if reader_card:
+        reader_dict = {
+            'library_card_id': reader_card.id
+        }
+        return reader_dict
+    else:
+        return {'error': 'карты нет'}

@@ -27,7 +27,7 @@ class ClassAuthorize(QtWidgets.QMainWindow, view_vhod.Ui_MainWindow):
             if response.get('error') is not None:
                 self.statusBar().showMessage('Ошибка: логин или пароль неверные')
             else:
-                self.session.cookies.update({'user_id': str(response.get('id'))})
+                self.session.cookies.update({'reader_id': str(response.get('id'))})
                 if not self.secondWin:
                     self.secondWin = ClassMain(self.session)
                 self.close()

@@ -43,3 +43,10 @@ async def bp_get_reader(request):
     if request.args.get('reader_id') is None:
         return json({'error': 'не все параметры указаны'})
     return json(await reader_service.reader_get(request.args.get('reader_id')))
+
+
+@bp.route('/get_library_card', methods=['GET'])
+async def bp_get_reader(request):
+    if request.args.get('reader_id') is None:
+        return json({'error': 'не все параметры указаны'})
+    return json(await reader_service.get_library_card(request.args.get('reader_id')))

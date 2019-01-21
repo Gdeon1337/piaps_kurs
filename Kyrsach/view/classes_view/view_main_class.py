@@ -1,7 +1,8 @@
 from PyQt5 import QtWidgets
 from requests import Session
 from view.model_view import view_main
-from .view_book_class import ClassBook
+import view.classes_view.view_book_class
+import view.classes_view.view_profile_class
 
 
 class ClassMain(QtWidgets.QMainWindow, view_main.Ui_MainWindow):
@@ -13,6 +14,8 @@ class ClassMain(QtWidgets.QMainWindow, view_main.Ui_MainWindow):
         self.setupUi(self)
         self.lineEditSearch.textEdited.connect(self.search_book_non)
         self.listWidget.itemClicked.connect(self.select_element_list)
+        self.pushButton.setText('Перейти к профилю пользователя')
+        self.pushButton.clicked.connect(self.create_prof_win)
 
     def search_book_non(self):
         self.listWidget.clear()
@@ -39,6 +42,12 @@ class ClassMain(QtWidgets.QMainWindow, view_main.Ui_MainWindow):
                     response = self.session.get('http://0.0.0.0:8000/book/get_book', params={
                         'book_id': book.get('id')
                     }).json()
-                    self.secondWin = ClassBook(response, self.session)
+                    self.secondWin = view.classes_view.view_book_class.ClassBook(response, self.session)
                 self.close()
                 self.secondWin.show()
+
+    def create_prof_win(self):
+        if not self.secondWin:
+            self.secondWin = view.classes_view.view_profile_class.ClassProfile(self.session)
+        self.close()
+        self.secondWin.show()

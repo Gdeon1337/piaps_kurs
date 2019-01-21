@@ -58,14 +58,14 @@ async def create_book(book: dict):
         return {'response': 'success'}
 
 
-async def add_count_book(book_arrival:dict):
+async def add_count_book(book_arrival: dict):
     async with db.transaction() as tx:
-        check_book = await Book.query.where(Book.id == book_arrival.get('book_id')).gino.first()
+        check_book = await Book.query.where(Book.id == int(book_arrival.get('book_id'))).gino.first()
         if check_book is None:
             return {'error': 'Такой книги не существует'}
         await Arrival.create(
-            count=book_arrival.get('count'),
-            book_id=book_arrival.get('book_id')
+            count=int(book_arrival.get('count')),
+            book_id=int(book_arrival.get('book_id'))
         )
         return {'response': 'success'}
 

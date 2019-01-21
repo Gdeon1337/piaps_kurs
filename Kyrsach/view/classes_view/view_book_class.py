@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 import base64
-from view import classes_view
+import view.classes_view.view_main_class
 from PyQt5.QtGui import QPixmap
 from requests import Session
 from view.model_view import view_book
@@ -43,6 +43,6 @@ class ClassBook(QtWidgets.QMainWindow, view_book.Ui_MainWindow):
 
     def back(self):
         if not self.secondWin:
-            self.secondWin = classes_view.ClassMain()
+            self.secondWin = view.classes_view.view_main_class.ClassMain(session=self.session)
         self.close()
         self.secondWin.show()
